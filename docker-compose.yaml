@@ -1,0 +1,16 @@
+services:
+  postgres-db:
+    container_name: capstone
+    image: postgres # use latest official postgres version
+    restart: always
+    environment:
+      POSTGRES_USER: acc_dev
+      POSTGRES_PASSWORD: acc_dev12
+      POSTGRES_DB: capstone_db
+      POSTGRES_HOST_AUTH_METHOD: password
+    ports:
+      - "5424:5432"
+
+volumes:
+  postgresql_data:
+    driver: local
