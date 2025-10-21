@@ -88,9 +88,10 @@ const Signup = () => {
             }
 
             const data = await loginRes.json();
-            login(data.sessionId);
+            login(data.sessionId, data.userId);
             console.log("Successfully logged in");
             console.log("Session ID: ", data.sessionId);
+            console.log("User ID: ", data.userId);
             navigate("/");
 
         } catch (err) {
