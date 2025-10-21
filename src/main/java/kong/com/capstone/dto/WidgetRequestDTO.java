@@ -1,21 +1,19 @@
 package kong.com.capstone.dto;
 
-public class WidgetRequestDTO {
-        private String name;
-        private String description;
-        private int amount;
-        private String image;
-        private Long userId;   // send userId instead of username
-        private String created; // e.g., "2025-10-20"
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-    public WidgetRequestDTO(String name, String description, int amount, String image, Long userId, String created) {
-        this.name = name;
-        this.description = description;
-        this.amount = amount;
-        this.image = image;
-        this.userId = userId;
-        this.created = created;
-    }
+public class WidgetRequestDTO {
+    private String name;
+    private String description;
+    private int amount;
+    private String image;
+
+    @JsonProperty("userId")
+    private String userIdStr;
+
+    private String created;
+
+    public WidgetRequestDTO() {}
 
     public String getName() {
         return name;
@@ -50,11 +48,11 @@ public class WidgetRequestDTO {
     }
 
     public Long getUserId() {
-        return userId;
+        return userIdStr != null && !userIdStr.isEmpty() ? Long.parseLong(userIdStr) : null;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUserIdStr(String userId) {
+        this.userIdStr = userId;
     }
 
     public String getCreated() {
@@ -65,5 +63,3 @@ public class WidgetRequestDTO {
         this.created = created;
     }
 }
-
-
