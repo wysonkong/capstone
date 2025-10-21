@@ -5,6 +5,7 @@ import kong.com.capstone.repository.WidgetRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WidgetService {
@@ -24,5 +25,9 @@ public class WidgetService {
 
     public List<Widget> findAll() {
         return widgetRepository.findAll();
+    }
+
+    public Optional<Widget> findById(Long id) {
+        return widgetRepository.findById(id);
     }
 }
