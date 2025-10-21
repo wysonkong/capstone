@@ -25,8 +25,8 @@ const Login = () => {
         }
 
         const data = await res.json();
-        login(data.sessionId);
-        console.log("Successfully logged in");
+        login(data.sessionId, data.userId);
+        console.log("Successfully logged in " + data.userId);
         console.log("Session ID: ", data.sessionId);
         navigate("/");
     }
