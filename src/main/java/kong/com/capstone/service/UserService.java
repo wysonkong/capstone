@@ -30,7 +30,7 @@ public class UserService {
         return userRepository.existsByUsername(username);
     }
 
-    public Object findById(Long userId) {
-        return userRepository.findById(userId);
+    public User findById(Long userId) {
+        return userRepository.findById(userId).orElse(null);
     }
 }
