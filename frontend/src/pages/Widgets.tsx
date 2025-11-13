@@ -94,6 +94,20 @@ const Widgets = () => {
         }
     }
 
+    const handleDelete = async (widgetId : number)=> {
+        try {
+            await fetch(`http://localhost:8080/api/widget/${widgetId}`, {
+                method: "DELETE",
+                headers: {"Content-Type": "application/json"},
+            });
+
+            setWidgets(prev => prev.filter(widget => widget.id !== widgetId));
+
+        } catch (e) {
+            console.error("Error", e);
+        }
+    }
+
     return (
         <>
             <div className={"px-32"}>
@@ -114,7 +128,7 @@ const Widgets = () => {
                     <div
                         className={"rounded-lg text-center text-white opacity-75 p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6"}>
                         {widgets.map((widget) => (
-                            <WidgetCard key={widget.id} widget={widget} onUpdateAmount={handleUpdateAmount}/>
+                            <WidgetCard key={widget.id} widget={widget} onUpdateAmount={handleUpdateAmount} handleDelete={handleDelete}/>
                         ))}
                     </div>
                 </div>

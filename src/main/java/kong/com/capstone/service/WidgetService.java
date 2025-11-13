@@ -5,6 +5,7 @@ import kong.com.capstone.repository.WidgetRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -29,5 +30,10 @@ public class WidgetService {
 
     public Optional<Widget> findById(Long id) {
         return widgetRepository.findById(id);
+    }
+
+    public void delete(Long id) throws NoSuchElementException {
+        Widget deleteWidget = widgetRepository.findById(id).orElseThrow();
+        widgetRepository.delete(deleteWidget);
     }
 }

@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog.tsx";
 import {useState} from "react";
 import {Button} from "@/components/ui/button.tsx";
-import {Edit2} from "lucide-react";
+import {Edit2, Trash} from "lucide-react";
 import {Input} from "@/components/ui/input.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {useAuth} from "@/components/AuthProvider.tsx";
@@ -26,9 +26,10 @@ type WidgetCardProps = {
         created: string
     }
     onUpdateAmount?: (widgetId: number, newAmount: number) => void;
+    handleDelete?: (widgetId: number) => void;
 }
 
-const WidgetCard = ({widget, onUpdateAmount}: WidgetCardProps) => {
+const WidgetCard = ({widget, onUpdateAmount, handleDelete}: WidgetCardProps) => {
     const {isLoggedIn} = useAuth();
     const [open, setOpen] = useState(false);
     const [editDialogOpen, setEditDialogOpen] = useState(false);
@@ -86,6 +87,13 @@ const WidgetCard = ({widget, onUpdateAmount}: WidgetCardProps) => {
         setEditDialogOpen(false);
     };
 
+    const onHandleDelete = () => {
+        if (handleDelete) {
+            handleDelete(widget.id);
+        }
+        setEditDialogOpen(false);
+    };
+
     return (
         <>
             <Dialog open={open} onOpenChange={setOpen}>
@@ -137,23 +145,39 @@ const WidgetCard = ({widget, onUpdateAmount}: WidgetCardProps) => {
 
                             </CardContent>
                             <CardFooter className={"px-4 py-2 flex justify-between items-center"}>
-                                <div className={`flex items-center gap-2 border-2 px-3 py-2 rounded ${getAmountBgColor()}`}>
+                                <div
+                                    className={`flex items-center gap-2 border-2 px-3 py-2 rounded ${getAmountBgColor()}`}>
                                     <span className={"font-semibold"}>Amount: </span>
                                     <span className={`font-bold ${getAmountColor()}`}>{widget.amount}</span>
                                 </div>
-                                {isLoggedIn && <Button
-                                    size="sm"
-                                    variant="outline"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setNewAmount(widget.amount);
-                                        setEditDialogOpen(true);
-                                    }}
-                                    className="gap-2"
-                                >
-                                    <Edit2 size={16} />
-                                    Edit Amount
-                                </Button>}
+                                {isLoggedIn &&
+                                    <div className={"flex gap-2"}>
+                                        <Button
+                                            size="sm"
+                                            variant="outline"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setNewAmount(widget.amount);
+                                                setEditDialogOpen(true);
+                                            }}
+                                            className="gap-2"
+                                        >
+                                            <Edit2 size={16}/>
+                                            Edit Amount
+                                        </Button>
+                                        <Button size="sm"
+                                                variant="destructive"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    onHandleDelete();
+                                                }}
+                                                className="gap-2"
+                                        >
+                                            <Trash size={16}/>
+                                            Delete
+                                        </Button>
+                                    </div>
+                                }
                             </CardFooter>
                         </Card>
                     </div>

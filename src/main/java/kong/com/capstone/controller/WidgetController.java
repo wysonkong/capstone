@@ -6,11 +6,13 @@ import kong.com.capstone.model.User;
 import kong.com.capstone.model.Widget;
 import kong.com.capstone.service.UserService;
 import kong.com.capstone.service.WidgetService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -20,7 +22,7 @@ public class WidgetController {
     public final WidgetService widgetService;
     public final UserService userService;
 
-    public WidgetController(WidgetService widgetService, UserService userService){
+    public WidgetController(WidgetService widgetService, UserService userService) {
         this.widgetService = widgetService;
         this.userService = userService;
     }
@@ -64,7 +66,7 @@ public class WidgetController {
     @GetMapping("/widgets")
     public List<WidgetDTO> findAll() {
         return widgetService.findAll().stream()
-                .map(widget -> new WidgetDTO (
+                .map(widget -> new WidgetDTO(
                         widget.getId(),
                         widget.getName(),
                         widget.getDescription(),
@@ -102,5 +104,15 @@ public class WidgetController {
         );
 
         return ResponseEntity.ok(responseDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteWidget(@PathVariable Long id) {
+        try {
+            widgetService.delete(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

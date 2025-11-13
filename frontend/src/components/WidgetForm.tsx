@@ -18,11 +18,12 @@ type WidgetFormProps = {
     onSubmit: (data: widgetData) => void;
 }
 export type widgetData = {
+    id?: number;
     name: string;
     description: string;
     amount: number;
     image: string;
-    userId: string;
+    username: string;
     created: string;
 };
 
@@ -31,7 +32,7 @@ const initialWidgetState: widgetData = {
     description: "",
     amount: 0,
     image: "react",
-    userId: "",
+    username: "",
     created: new Date().toISOString().split("T")[0],
 }
 
@@ -128,7 +129,6 @@ const WidgetForm = ({onSubmit}: WidgetFormProps) => {
                 }
             } catch (error) {
                 console.error("Error uploading image:", error);
-                alert("Error uploading image: " + error.message);
                 return;
             }
         }
